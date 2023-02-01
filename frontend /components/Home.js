@@ -13,7 +13,7 @@ function Home() {
   const [moviesData, setMoviesData] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3001/movies')
+    fetch('mymoviz-backend-theta.vercel.app/movies')
       .then(response => response.json())
       .then(data => {
         const formattedData = data.movies.map((movie) => {
