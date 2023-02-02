@@ -11,31 +11,6 @@ function Home() {
 
   const [likedMovies, setLikedMovies] = useState([]);
   const [moviesData, setMoviesData] = useState([]);
-
-  useEffect(() => {
-    fetch('mymoviz-backend-theta.vercel.app/movies')
-      .then(response => response.json())
-      .then(data => {
-        const formattedData = data.movies.map((movie) => {
-        const poster = 'https://image.tmdb.org/t/p/w500/${movie.poster_path}'; 
-        let overview = movie.overview;
-        if (overview.lenght > 250 ){
-          overview = overview.substring(0 , 250) + "...";
-        }
-        return {
-          title: movie.title , 
-          poster , 
-          voteAverage: movie.vote_average , 
-          voteCount:movie.vote_count , 
-          overview,
-        };
-      });
-
-        setMoviesData(formattedData);
-      });
-
-  }, []);
-
   // Liked movies (inverse data flow)
   const updateLikedMovies = (movieTitle) => {
     if (likedMovies.find(movie => movie === movieTitle)) {
@@ -66,6 +41,31 @@ function Home() {
     const isLiked = likedMovies.some(movie => movie === data.title);
     return <Movie key={i} updateLikedMovies={updateLikedMovies} isLiked={isLiked} title={data.title} overview={data.overview} poster={data.poster} voteAverage={data.voteAverage} voteCount={data.voteCount} />;
   });
+
+  
+  useEffect(() => {
+    fetch('mymoviz-backend-theta.vercel.app')
+      .then(response => response.json())
+      .then(data => {
+        const formattedData = data.movies.map((movie) => {
+        const poster = 'https://image.tmdb.org/t/p/w500/${movie.poster_path}'; 
+        let overview = movie.overview;
+        if (overview.lenght > 250 ){
+          overview = overview.substring(0 , 250) + "...";
+        }
+        return {
+          title: movie.title , 
+          poster , 
+          voteAverage: movie.vote_average , 
+          voteCount:movie.vote_count , 
+          overview,
+        };
+      });
+
+        setMoviesData(formattedData);
+      });
+
+  }, []);
 
   
   return (
